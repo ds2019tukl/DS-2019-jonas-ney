@@ -63,7 +63,24 @@ def generate_plt_ticks(nr_ticks, list):
         tick_list.append(list[index])
     return index_list, tick_list
 
-#
+
+def format_text(text):
+    """
+    Transforms text to same format.
+    Only numbers or digits allowed, space repalced with "-"
+    Letters only upper case
+    :param text: String to get formatted
+    :type text: str
+    :return: Formatted string
+    """
+
+    text = str(text)
+    text = text.upper()
+    text = text.replace(" ", "-")
+    getVals = list([val for val in text if val.isalpha() or val.isnumeric() or (val == '-')])
+    text = "".join(getVals)
+    return text
+
 def draw_city(name, lat, lng, map):
     """
     Draw marker for city on Basemap map.
@@ -78,9 +95,6 @@ def draw_city(name, lat, lng, map):
     :type map: Basemap
     :return:
     """
-
-    print("Lat type: " + str(type(lat)))
-
     big_cities = {
         'Kaiserslautern': 'KL',
         'Mannheim': 'MA',
@@ -163,6 +177,20 @@ def between_12_13(time_stamp):
     time_stamp = time_stamp.split(".")[0]
     time = dt.strptime(time_stamp, "%Y-%m-%d %H:%M:%S")
     return (time.hour == 12)
+
+def between_7_20(time_stamp):
+    """
+    Checks if time is between 7 and 20 o'clock.
+
+    :param time_stamp: Time stamp in format "%Y-%m-%d %H:%M:%S."
+    :type time_stamp: str
+    :return: bool, true if time between 7 and 20 o'clock, else false
+    """
+
+    time_stamp = time_stamp.split(".")[0]
+    time = dt.strptime(time_stamp, "%Y-%m-%d %H:%M:%S")
+    bet_7_20 = time.hour > 6 and time.hour < 21
+    return bet_7_20
 
 def time_stamp_to_month(time_stamp):
     """
